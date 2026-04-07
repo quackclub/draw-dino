@@ -108,7 +108,7 @@ export default () => {
           <p>
             And we've got the best collection anywhere in the universe™. Anyone
             who sends us a dino drawing will earn the dinoisseur badge, as well
-            as get an exclusive emoji on Slack.
+            as get an exclusive emoji through Hack Club Auth.
           </p>
           <img
             src="dinoisseur.png"

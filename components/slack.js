@@ -1,6 +1,10 @@
 import FilmGrain from "./filmGrain";
 import ProgressButton from "./progressButton";
 
+const HACKCLUB_AUTH_URL =
+  process.env.NEXT_PUBLIC_HACKCLUB_AUTH_URL ||
+  "https://draw-dino-auth.hackclub.com/update-github-url";
+
 const containerStyle = {
   width: "100%",
   height: "100vh",
@@ -73,7 +77,6 @@ export default ({ index, progress, setProgress, github }) => (
         filter: blur(1px);
       }
 
-      .slack-logo,
       .portrait,
       .portrait-decoration {
         filter: blur(0px);
@@ -150,14 +153,13 @@ export default ({ index, progress, setProgress, github }) => (
           </p>
           <p>
             Orpheus says: <br />
-            “If you're a Hack Clubber, sign in to Slack for an exclusive emoji!”
+            “If you're a Hack Clubber, sign in with Hack Club Auth for an exclusive emoji!”
           </p>
 
           <a
-            href={
-              "https://hack.af/make-dino-slack-auth?state=https://github.com/" +
-              github
-            }
+            href={`${HACKCLUB_AUTH_URL}?state=${encodeURIComponent(
+              `https://github.com/${github}`
+            )}`}
             target="_blank"
             style={{ display: "block", textDecoration: "none" }}
           >
@@ -189,13 +191,7 @@ export default ({ index, progress, setProgress, github }) => (
             <p style={{
               textDecoration: "underline"
             }}>
-              Click here to sign into{" "}
-              <img
-                src="slack.svg"
-                className="slack-logo"
-                style={{ height: "1em" }}
-              />{" "}
-              Slack
+              Click here to sign into Hack Club Auth
             </p>
           </a>
           <ProgressButton
