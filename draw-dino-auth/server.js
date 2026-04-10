@@ -185,7 +185,33 @@ app.get('/oauth/callback', async (req, res) => {
     metrics.increment("success.hackclub_auth", 1);
     req.session.github = null
     req.session.oidcState = null
-    return res.redirect(302, HACKCLUB_SUCCESS_REDIRECT_URL)
+
+    const bridgeHtml = `<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Hack Club Auth Success</title>
+  </head>
+  <body>
+    <script>
+      (function () {
+        var payload = { type: 'hca-auth-success', at: Date.now() }
+        try {
+          if (window.opener && !window.opener.closed) {
+            window.opener.postMessage(payload, '*')
+          }
+        } catch (err) {}
+
+        setTimeout(function () {
+          window.close()
+          document.body.innerHTML = '<p>Sign-in complete. You can close this tab and return to the guide.</p>'
+        }, 200)
+      })()
+    </script>
+  </body>
+</html>`
+
+    return res.status(200).type('html').send(bridgeHtml)
   } catch (error) {
     console.error(error)
     metrics.increment("errors.hackclub_auth", 1);
